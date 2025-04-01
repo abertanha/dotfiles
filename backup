@@ -1,0 +1,44 @@
+#!/bin/bash
+
+################################################
+# name: BUC - Backup Uploader Encryptor        #
+# version: 0.2.1                               #
+# version date: 14/12/24                       #
+# author: Adriano Bertanha                     #
+################################################
+
+# variables
+SOURCE_DIR="$HOME/Arquivos_Linux"
+BACKUP_DIR="$HOME/backup"
+currentDate=$(date +%Y-%m-%d)
+cpioOptions="-ocv"
+FIND=$(which find)
+CPIO=$(which cpio)
+
+# check if there are files to back up
+if [[ -z $($FIND "$SOURCE_DIR" -type f) ]];then
+	echo "No files found in $SOURCE_DIR.Exiting..." >> "$BACKUP_DIR/backupLog_$currentDate.log"
+	exit 0
+fi
+
+# Check to see if rclone is installed
+if ! command -v rclone > /dev/null 2>&1; then
+	printf "This script requires rclone to be installed.\n"
+	printf "Please use your distribution's package manager to install it and try again.\n"
+	exit 2
+fi
+
+RCLONE=$(which rclone)
+
+# to the cpio work properly you need to run inside the directory that you want to backup
+cd "$SOURCE_DIR"
+
+# creating the .cpio archive
+outputFile="$BACKUP_DIR/backup_$currentDate.cpio"
+$FIND . -print | $CPIO $cpioOptions > "$outputFile" 2>> "$BACKUP_DIR/backupLog_$currentDate.log"
+
+# upload the file to Google Drive using rclone
+$RCLONE copy "$outputFile" crypt-drive:"$currentDate" 2>> "$BACKUP_DIR/EncriptionUploadLog_$currentDate.log"
+
+# remove the backup file that were created to complete the operation
+rm "$outputFile"
