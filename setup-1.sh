@@ -23,6 +23,7 @@ sudo apt-get install -y brave-browser
 
 ########################################
 # Instalando Visual Studio Code
+echo "Installing VS Code"
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
 sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -35,13 +36,30 @@ sudo apt-get update
 sudo apt-get install -y code
 
 # Install extensions
-code --install-extension esbenp.prettier-vscode        # Prettier
 code --install-extension dbaeumer.vscode-eslint        # ESLint
 code --install-extension denoland.vscode-deno          # Deno extension
 code --install-extension mongodb.mongodb-vscode        # MongoDB extension
 code --install-extension ms-vscode.vscode-typescript-next # TypeScript support
-#code --install-extension ms-azuretools.vscode-docker   # Docker
-#code --install-extension alexcvzz.vscode-sqlite        # SQLite
+code --install-extension DigitalBrainstem.javascript-ejs # EJS Support
+code --install-extension ritwickdey.LiveServer         # Live Server
+code --install-extension PKief.material-icon-theme     # Material Icons
+code --install-extension zhuangtongfa.Material-theme   # One Dark Pro
+
+########################################
+# Instalando Visual Studio Code Insiders
+echo "Installing VS Code Insiders"
+sudo apt-get update
+sudo snap install code-insiders --classic
+
+
+sudo apt-get update
+sudo apt-get install -y code
+
+# Install extensions
+code --install-extension dbaeumer.vscode-eslint        # ESLint
+code --install-extension denoland.vscode-deno          # Deno extension
+code --install-extension mongodb.mongodb-vscode        # MongoDB extension
+code --install-extension ms-vscode.vscode-typescript-next # TypeScript support
 code --install-extension DigitalBrainstem.javascript-ejs # EJS Support
 code --install-extension ritwickdey.LiveServer         # Live Server
 code --install-extension PKief.material-icon-theme     # Material Icons
@@ -49,6 +67,7 @@ code --install-extension zhuangtongfa.Material-theme   # One Dark Pro
 
 ########################################
 # Instalando MongoDB Compass e MongoSH
+echo "Installing MongoDB Compass e MongoSH"
 wget https://downloads.mongodb.com/compass/mongodb-compass_1.42.0_amd64.deb -O /tmp/mongodb-compass.deb
 sudo dpkg -i /tmp/mongodb-compass.deb
 sudo apt-get install -f
@@ -58,15 +77,19 @@ curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg --dearmo
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 sudo apt install -y mongodb-mongosh
 mongosh --version
+read -p "Instalado MongoDB Compass e MongoSH, pressione Enter para continuar..."
 ########################################
-# Installing DBeaver CE and Postman
-sudo snap install dbeaver-ce
+# Installing Postman
+echo "Installing POSTMAN"
 sudo snap install postman
-
+read -p "Pressione Enter para continuar..."
 
 ########################################
 # Instalando KeePassXC
+echo "Installing KeePassXC"
 sudo apt-get install -y keepassxc
+echo "Recomendo instalar a extensão para o browser BRAVE também!"
+read -p "Pressione Enter para continuar..."
 
 ########################################
 # Configuiring git
@@ -81,6 +104,7 @@ curl -fsSL https://deno.land/install.sh | sh
 # Add Deno to PATH in zshrc
 echo 'export DENO_INSTALL="$HOME/.deno"' >> ~/.zshrc
 echo 'export PATH="$DENO_INSTALL/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 
 # Add Deno to current session
 export DENO_INSTALL="$HOME/.deno"
@@ -128,6 +152,7 @@ echo "Coping universal update script"
 sudo mv ~/Documentos/git/dotfiles/update /usr/local/bin
 sudo chown root:root /usr/local/bin/update
 ls -l /usr/local/bin/
+echo "Para atualizar seu sistema agora use simplismente 'sudo update'!"
 read -p "Aperte enter para continuar"
 #######################################
 
