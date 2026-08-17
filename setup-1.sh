@@ -85,13 +85,6 @@ sudo snap install postman
 read -p "Pressione Enter para continuar..."
 
 ########################################
-# Instalando KeePassXC
-echo "Installing KeePassXC"
-sudo apt-get install -y keepassxc
-echo "Recomendo instalar a extensão para o browser BRAVE também!"
-read -p "Pressione Enter para continuar..."
-
-########################################
 # Configuiring git
 git config --global user.email $git_config_user_email
 git config --global user.name $git_name
@@ -130,12 +123,16 @@ echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This
 # Installing oh-my-zshell
 curl -sSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash
 echo "zsh" >> ~/.bashrc
-
 echo "export GOPATH=\$HOME/Documents/git/go" >> ~/.zshrc
 echo "export GOROOT=/usr/local/go" >> ~/.zshrc
 echo "export PATH=\$PATH:\$GOPATH/bin" >> ~/.zshrc
 echo "export PATH=\$PATH:\$GOROOT/bin" >> ~/.zshrc
 echo "export FZF_DEFAULT_COMMAND='rg --files --follow --hidden'" >> ~/.zshrc
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
 ########################################
 # Generating asymmetric keys
